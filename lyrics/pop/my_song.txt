@@ -4,3 +4,11 @@
         forvalues i=1/2 {                            // save the values of thresholds
 	       generate q`i'`inc_def'`year_2' = r(r`i')
         }
+    
+	 egen n_panel = rownonmiss(`inc_def'`year_1' `inc_def'`year_2') // number of observations in a panel
+     keep if n_panel == 2
+
+	 generate t`inc_def'`year_2' = cond(`inc_def'`year_2'<= q1`inc_def'`year_2', 1,                                           /// // assign the cross-sectional threstholds to panel data in year 2
+                                   cond(`inc_def'`year_2'> q1`inc_def'`year_2' & `inc_def'`year_2'<=q2`inc_def'`year_2', 2,   ///
+                                   cond(`inc_def'`year_2'> q2`inc_def'`year_2', 3,                                             ///
+                                   .))) 
