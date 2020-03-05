@@ -1,0 +1,6 @@
+     xtile t`inc_def'`year_1' = `inc_def'`year_1' if origsm`year_1'==1 [aweight=inwgt`year_1'], nquantiles(3) // divide income in year 1 by terciles 
+
+	 _pctile `inc_def'`year_2'  if origsm`year_2'==1 [aweight=inwgt`year_2'], nquantiles(3) // calculate the cross-section thresholds for terciles in year 2
+        forvalues i=1/2 {                            // save the values of thresholds
+	       generate q`i'`inc_def'`year_2' = r(r`i')
+        }
